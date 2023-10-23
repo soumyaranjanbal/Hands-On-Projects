@@ -1,7 +1,7 @@
 SELECT *
 FROM PortfolioProject.dbo.CovidDeaths
-WHERE continent IS NOT NULL 
-
+WHERE continent IS NOT NULL  #Removing obervations where continent has null value but has continent name in the region column instead of the country name
+	
 --SELECT *
 --FROM PortfolioProject.dbo.CovidVaccinations 
 --ORDER BY 3,4
@@ -14,7 +14,7 @@ WHERE continent IS NOT NULL
 ORDER BY 1,2
 
 -- Looking at Total Cases vs Total Deaths
--- Shows likelihood of dying if you contracted COVID in Germany
+-- Shows likelihood of dying if someone contracted COVID in Germany
 
 SELECT location, date, total_cases, total_deaths, (total_deaths/total_cases)*100 AS DeathPercentage
 FROM PortfolioProject.dbo.CovidDeaths
@@ -23,7 +23,7 @@ AND location = 'Germany'
 ORDER BY 1,2
 
 --Looking at Total Cases vs Population
--- Shows the percentage of population that got COVID 
+-- Shows the percentage of German population that got infected with COVID 
 
 SELECT location, date, population, total_cases, (total_cases/population)*100 AS CasesPercentage
 FROM PortfolioProject.dbo.CovidDeaths
@@ -49,7 +49,8 @@ WHERE continent IS NOT NULL
 GROUP BY location
 ORDER BY TotalDeathCount DESC
 
--- Let us break things down by Continent 
+-- Breaking things down by Continent 
+-- Showing contintents with the highest death count
 
 SELECT continent, Max(CAST(total_deaths AS int)) AS TotalDeathCount
 FROM PortfolioProject.dbo.CovidDeaths
@@ -87,6 +88,7 @@ SELECT *
 FROM PortfolioProject.dbo.CovidVaccinations
 
 --Looking at Total Population vs Vaccinations
+-- Shows Percentage of Population that has recieved at least one Covid Vaccine
 
 WITH PopvsVac (continent, location, date, population, new_vaccination, RollingPeopleVaccinated)
 AS
@@ -104,7 +106,7 @@ WHERE dea.continent IS NOT NULL
 SELECT *, (RollingPeopleVaccinated/population)*100 AS PercentageVaccination
 FROM PopvsVac
 
---Creating View to store Data for Visualizations later
+--Creating View to store Data for Visualizations 
 
 CREATE VIEW PercentPopulationVaccinated AS
 SELECT dea.continent, dea.location, dea.date, dea.population, vac.new_vaccinations,
