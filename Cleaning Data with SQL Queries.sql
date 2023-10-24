@@ -10,7 +10,7 @@ From PortfolioProject.dbo.NashvilleHousing
 
 --------------------------------------------------------------------------------------------------------------------------
 
--- Standardizing Date Format
+-- Standardizing SaleDate Format
 
 
 Select saleDateConverted, CONVERT(Date,SaleDate)
@@ -61,7 +61,7 @@ Where a.PropertyAddress is null
 
 --------------------------------------------------------------------------------------------------------------------------
 
--- Breaking out Address into Individual Columns (Address, City, State)
+-- Breaking out PropertyAddress into Individual Columns (Address and City)
 
 
 Select PropertyAddress
@@ -90,13 +90,8 @@ Update NashvilleHousing
 SET PropertySplitCity = SUBSTRING(PropertyAddress, CHARINDEX(',', PropertyAddress) + 1 , LEN(PropertyAddress))
 
 
-
-
 Select *
 From PortfolioProject.dbo.NashvilleHousing
-
-
-
 
 
 Select OwnerAddress
